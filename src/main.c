@@ -1,15 +1,15 @@
 
 #include "AST/AST_Node.c"
+#include "macros.h"
+#include "file_ops/file_ops.c"
+#include "tools/helpers.c"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#define CHAR_MAX_PER_LINE 1 << 8 // Arbitrary Large Size
-#define COMMENT_CHAR	'$'
-#define PRINT_CHAR	'"' 
-
 // Updated check to make sure it's Windows x64
+// Will add reliability against different OS's soon
 #if !defined(_WIN64)
     #error "Error: Windows x64 bit architecture is needed to compile"
 #endif
@@ -19,46 +19,22 @@ int emit_print_count  = 0;
 char* message_title = "msg";
 char* length_title = "len";
 
-_Bool cleanAndCheckPrintStr(char* str)
-{
-    char* result = (char*)malloc(strlen(str)+1);
-    int count = 0;
-    int j = 0;
-
-    for (int i = 0; i < strlen(str); ++i)
-    {
-        if (str[i] == PRINT_CHAR)
-            count++;
-
-        if (str[i] != '\n' && str[i] != PRINT_CHAR)
-            result[j++] = str[i];
-    }
-    
-    result[j] = '\0';
-
-    strcpy(str, result);
-    free(result);
-
-    return (count == 2);
-}
 
 int main(int argc, char** argv)
 {
-	
-	if (argc > 3)
+    
+    check_for_tools();
+
+	if (argc < 2) // Updated this to the correct amount of arguments I want 
 	{
 		fprintf(stderr, "Insufficient arguments to compile");
 		return -1;
 	}
 
-	FILE* f_read = fopen(argv[1], "r");
-
-	if (f_read == NULL)
-	{
-		fprintf(stderr, "Unable to open file to compile");
-		fclose(f_read);
-		return -1;
-	}
+    FILE* f_read = open_file_and_check_nullity(
+        argv[1],
+        "r"
+    );
 
 	char buffer[CHAR_MAX_PER_LINE];
 
@@ -109,13 +85,10 @@ int main(int argc, char** argv)
 
     file_output_name = strcat(file_output_name, ".asm");
 
-    FILE* f_write = fopen(file_output_name, "w");
-
-    if (f_write == NULL)
-    {
-        fprintf(stderr, "Unable to open output file");
-        return -1;
-    }
+    FILE* f_write = open_file_and_check_nullity(
+        file_output_name,
+        "w"
+    );
 
     fprintf(f_write, "default rel\nextern GetStdHandle\nextern WriteConsoleA\nextern ExitProcess\n\n");
 
@@ -212,8 +185,46 @@ int main(int argc, char** argv)
         }
     }
 
-    fprintf(f_write, "\nxor ecx, ecx\ncall ExitProcess\n");
-	return 0;
+    // fprintf(f_write, "\nxor ecx, ecx\ncall ExitProcess\n");
+	
+    write_exit_code(f_write);
+
+    fclose(f_write);
+
+    // new work
+
+    if (_ASM_LINK_CREATE_PE_FLAG_)
+    {
+
+        //nasm -f win64 ${FILE_NAME}.asm -o ${FILE_NAME}.o
+	// ld ${FILE_NAME}.o -o ${FILE_NAME}.exe -lkernel32 -e main
+        // system("nasm -f win64 ")
+        char* message_one = (char*)malloc(sizeof(char*));
+        snprintf(message_one, sizeof(message_one), "nasm -f win64 %s.asm -o %s.o", file_output_name);
+
+        int first_call = system(message_one);
+
+        if (first_call != 0)
+        {
+            fprintf(stderr, "Error: Something went wrong with the nasm assembly in the compilation process");
+            free (message_one);
+            return -1;
+        } else {
+            char* message_two = (char*)malloc(sizeof(char*));
+            snprintf(message_two, sizeof(message_two), "ld %s.o -o %s.exe -lkernel32 -e main", file_output_name);
+
+            int final_call = system(message_two);
+
+            if (final_call != 0)
+            {
+                fprintf(stderr, "Error: Something went wrong with the ld linker in the compilation process");
+                free (message_two);
+                return -1;
+            }
+        }
+    }
+    
+    return 0;
 }
 
 
