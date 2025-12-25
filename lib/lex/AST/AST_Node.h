@@ -1,5 +1,5 @@
-#ifndef _AST_NODE_H_
-#define _AST_NODE_H_
+#ifndef AST_NODE_H
+#define AST_NODE_H
 
 /**
  * @brief 

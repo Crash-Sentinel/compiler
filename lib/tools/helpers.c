@@ -1,14 +1,7 @@
 
-#include "../macros.h"
+
 #include "helpers.h"
 
-/**
- * @brief 
- * 
- * @param str 
- * @return true 
- * @return false 
- */
 bool cleanAndCheckPrintStr(char* str)
 {
     char* result = (char*)malloc(strlen(str)+1);
@@ -50,3 +43,28 @@ void check_for_tools()
 
     system("cls");
 }
+
+// TODO: Double check the logic behind the pointers on this one, \
+    specifically the non-zero offset warning
+char* create_new_name_for_output_file(
+    char* file_name,
+    char* file_new_extension
+)
+{
+    char* file_output_name = (char*)malloc(sizeof(strlen(file_name)+5));
+
+    char* ptr = strchr(file_name+2, '.');
+    int index = -1;
+
+    if (ptr)
+    {
+        index = ptr-(file_name+2);
+        strncpy(file_output_name, file_name+2, index);
+        file_output_name[index] = '\0';
+        strcat(file_output_name, file_new_extension);
+        return file_output_name;
+    }
+    free(file_output_name);
+    free(ptr);
+    return NULL;
+};
