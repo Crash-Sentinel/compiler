@@ -10,7 +10,7 @@ void write_comment_node(
 }
 
 // Should this have ASTNode_t* node for more expanded functionality?
-void write_print_only_string_node(
+void write_windowsx64_print_only_string_node(
     FILE* file_to_write
 )
 {
@@ -20,7 +20,8 @@ void write_print_only_string_node(
     sprintf(buff1, "%s%d", message_title, emit_print_count);
     sprintf(buff2, "%s%d", length_title, emit_print_count);
 
-    fprintf(file_to_write, 
+    fprintf(
+        file_to_write, 
         "\tsub rsp, 40\n\n"
         "\tmov rcx, rbx\n"
         "\tlea rdx, [%s]\n"
@@ -35,4 +36,32 @@ void write_print_only_string_node(
     );
 
     emit_print_count++;
-}
+};
+
+void write_linux_print_only_string_node(
+    FILE* file_to_write
+)
+{
+    char buff[256];
+    char buff2[256];
+
+    char buffer[512];
+    char buffer2[512];
+
+    sprintf(buffer, "%s%d", message_title, emit_print_count);
+    sprintf(buffer2, "%s%d", length_title, emit_print_count);
+
+    fprintf(
+        file_to_write,
+        "\n\tmov\trax, SYS_WRITE\n"
+        "\n\tmov\trdi, STDOUT\n"
+        "\n\tmov\trsi, %s\n"
+        "\n\tmov\trdx, %s\n"
+        "\n\tsyscall\n"
+        "\n\tpush\trax\n",
+        buffer,
+        buffer2
+    );
+
+    emit_print_count++;
+};

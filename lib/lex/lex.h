@@ -12,7 +12,7 @@
 void addCommentNode(
     char* buffer,
     ASTNode_t* program,
-    int program_size
+    int* program_size
 );
 
 /**
@@ -25,7 +25,7 @@ void addCommentNode(
 void addPrintOnlyString(
     char* buffer,
     ASTNode_t* program,
-    int program_size
+    int* program_size
 );
 
 #endif // _LEX_H_

@@ -20,5 +20,7 @@ typedef struct ASTNode
     char* value;
 } ASTNode_t;
 
+static int program_size = 0;    //depth
+
 
 #endif // _AST_NODE_H_

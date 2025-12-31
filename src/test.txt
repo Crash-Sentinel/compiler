@@ -2,3 +2,6 @@ $ This is a test file
 
 $ This prints out "Hello World!"
 "Hello World!"
+
+$ This prints out "Test"
+"Test"

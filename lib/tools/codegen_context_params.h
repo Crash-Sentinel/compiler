@@ -7,7 +7,7 @@
 typedef struct {
     FILE* file_to_write;
     ASTNode_t* program;
-    int program_size;
+    int size_of_program;
 } codegen_context_t;
 
 #endif // CODEGEN_CONTEXT_H

@@ -11,6 +11,16 @@
 #include "lex/lex.c"
 #include "parse/parser.c"
 
+
+// Comment this line to disable debug mode:
+#define DEBUG_MODE 1
+
+#if defined(DEBUG_MODE)
+    bool debug_mode_flag = 1;
+#else
+    bool debug_mode_flag = 0;
+#endif
+
 int main(int argc, char** argv)
 {
     check_for_tools();
@@ -30,39 +40,56 @@ int main(int argc, char** argv)
 
 	while (fgets(buffer, sizeof(buffer), f_read) != NULL)
 	{
+        if (debug_mode_flag)
+            printf("Program size: %d\n", program_size);
         char* copyOfBuffer = (char*)malloc(strlen(buffer)+1);
         strcpy(copyOfBuffer, buffer);
 
 		if (buffer[0] == COMMENT_CHAR)
 		{
+            if (debug_mode_flag)
+                printf("Comment made\n");
             append_comment_node_to_ast(
                 buffer,
                 program,
-                program_size
+                &program_size
             );
             continue;
 		}
 		
         if (cleanAndCheckPrintStr(copyOfBuffer))
 		{
-            addPrintOnlyString(copyOfBuffer, program, program_size);
+            if (debug_mode_flag)
+                printf("Print Only Added\n");
+            addPrintOnlyString(copyOfBuffer, program, &program_size);
             continue;
 		}
+
+        
 	}
 
     char* file_output_name = create_new_name_for_output_file(argv[1], ".asm");
-    printf("%s\n", argv[1]);
-    printf("%s\n", file_output_name);
+    if (debug_mode_flag)
+    {        
+        printf("%s\n", argv[1]);
+        printf("%s\n", file_output_name);
+    }
 
     FILE* f_write = open_file_and_check_nullity(
         file_output_name,
         "w"
     );
 
+    if (f_write == NULL)
+    {
+        fprintf(stderr, "Error: Unable to open file correctly!\n");
+        exit(-1);
+    }
+
     codegen_context_t params = {
         .file_to_write = f_write,
         .program = program,
-        .program_size = program_size
+        .size_of_program = program_size
     };
 
     write_headers(
@@ -88,6 +115,7 @@ int main(int argc, char** argv)
         if (current_node.type == NODE_COMMENT)
         {
             // fprintf(f_write, "\n; %s\n", current_node.value);
+
             write_comment_node(f_write, &current_node);
         }
 

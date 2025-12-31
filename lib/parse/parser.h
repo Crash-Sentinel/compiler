@@ -16,7 +16,16 @@ void write_comment_node(
  * 
  * @param file_to_write - TODO: Finish This
  */
-void write_print_only_string_node(
+void write_windowsx64_print_only_string_node(
+    FILE* file_to_write
+);
+
+/**
+ * @brief - TODO: Finish This
+ * 
+ * @param file_to_write - TODO: Finish This
+ */
+void write_linux_print_only_string_node(
     FILE* file_to_write
 );
 

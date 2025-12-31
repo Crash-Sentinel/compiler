@@ -4,11 +4,14 @@
 
 #include <stdio.h>
 #include "../codegen_context_params.h"
+#include "../../lex/AST/AST_Node.c"
 
 char* message_title = "msg";
 char* length_title = "len";
 static int emit_print_count = 0;
 static int parse_print_count = 0;
+
+#define BUFFER_LEN 1 << 8
 
 /**
  * @brief - TODO: Finish This

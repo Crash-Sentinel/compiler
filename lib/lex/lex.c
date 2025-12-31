@@ -4,7 +4,7 @@
 void append_comment_node_to_ast(
     char* buffer,
     ASTNode_t* program,
-    size_t program_size
+    int* program_size
 )
 {
     char value[256];
@@ -21,13 +21,14 @@ void append_comment_node_to_ast(
         .value = strdup(value),
     };
 
-    program[program_size++] = comment_node;
+    program[(*program_size)] = comment_node;
+    (*program_size) = (*program_size) + 1;
 }
 
 void addPrintOnlyString(
     char* buffer,
     ASTNode_t* program,
-    int program_size
+    int* program_size
 )
 {
     parse_print_count++;
@@ -37,5 +38,6 @@ void addPrintOnlyString(
         .value = strdup(buffer)
     };
 
-    program[program_size++] = print_node;
+    program[(*program_size)] = print_node;
+    (*program_size) = (*program_size) + 1;
 }

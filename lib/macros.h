@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "./tools/codegen_context_params.h"
+#include "./parse/parser.h"
 
 #define CHAR_MAX_PER_LINE 1 << 8 // Arbitrary Large Size
 #define COMMENT_CHAR	  '$'
@@ -42,6 +43,10 @@
         codegen_context_t* params
     ) { write_linux_section_text(params); }
 
+    void write_print_only_string_node(
+        FILE* file_to_write
+    ) { write_linux_print_only_string_node(file_to_write); }
+
 #elif defined(_WIN64)
 
     void write_headers(
@@ -63,6 +68,10 @@
     void write_section_text(
         codegen_context_t* params
     ) { write_windowsx64_section_text(params); }
+
+    void write_print_only_string_node(
+        FILE* file_to_write
+    ) { write_windowsx64_print_only_string_node(file_to_write); }
 
 #else
     #error "Unknown OS detected, cannot compile"
