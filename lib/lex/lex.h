@@ -6,8 +6,8 @@
 /**
  * @brief Create a Comment Node for the AST
  * 
- * @param buffer - TODO: Finish This 
- * @param program_size - TODO: Finish This 
+ * @param buffer - the raw buffer 
+ * @param program_size - the program size (this will typically always be a reference to the program_size, so "&program_size")
  */
 void addCommentNode(
     char* buffer,
@@ -16,11 +16,13 @@ void addCommentNode(
 );
 
 /**
- * @brief - TODO: Finish This
+ * @brief - Appends a Print Node specifically for only string values, 
+ *          something like "Hello World!" rather than "My variable: {var}"
  * 
- * @param buffer - TODO: Finish This 
- * @param program - TODO: Finish This 
- * @param program_size - TODO: Finish This 
+ * @copydoc addCommentNode
+ * @param buffer - The raw buffer string
+ * @param program - a pointer to the program (this will also just be a reference to the program in AST_Node.c)
+ * @param program_size - the program size (this will typically always be a reference to the program_size, so "&program_size")
  */
 void addPrintOnlyString(
     char* buffer,

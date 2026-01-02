@@ -1,3 +1,11 @@
+// ----------------------------------------
+// Author: Crash Sentinel
+// 
+// Purpose: Define Macros and function abstractions depending on the OS version that is currently
+// being used by the specific user.
+//
+// Current Date: 1/2/2026
+// ----------------------------------------
 
 #ifndef MACROS_H
 #define MACROS_H
@@ -7,21 +15,17 @@
 #include "./tools/codegen_context_params.h"
 #include "./parse/parser.h"
 
+// Macros
 #define CHAR_MAX_PER_LINE 1 << 8 // Arbitrary Large Size
 #define COMMENT_CHAR	  '$'
 #define PRINT_CHAR	      '"'
 
-// int parse_print_count = 0;
-// int emit_print_count  = 0;
-
-// #define BEHAVIOR 0 // SET TO 0 BY DEFAULT / FULLY COMPILES A PE BY DEFAULT
-
+// Flags for Compilation (-- Unused but will be soon --)
 #define _ASM_ONLY_FLAG_ "-nasm"
-// #define _ASM_LINK_CREATE_PE_FLAG_ "-pe"
 
-
-// Ensuring correct functions are used for different OS types
+// Define Abstract Functions to define OS specific behavior for the Lexer / Parser to interpret
 #if defined(__linux__)
+    // Linux Distros
 
     void write_headers(
         codegen_context_t* params
@@ -47,6 +51,7 @@
         FILE* file_to_write
     ) { write_linux_print_only_string_node(file_to_write); }
 
+    // 64 architecture Windows
 #elif defined(_WIN64)
 
     void write_headers(
@@ -72,6 +77,8 @@
     void write_print_only_string_node(
         FILE* file_to_write
     ) { write_windowsx64_print_only_string_node(file_to_write); }
+
+// Expect _WIN32 possibilities in the future 
 
 #else
     #error "Unknown OS detected, cannot compile"

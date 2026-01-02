@@ -1,3 +1,11 @@
+// ----------------------------------------
+// Author: Bennett Miller
+//
+// Purpose: The main.c file that makes everything run + will be then compiled (yes, compiling a compiler)
+// to get the executable that can actually do compiling of your program
+// 
+// Date: 1/2/2026
+// ----------------------------------------
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -10,7 +18,6 @@
 #include "tools/helpers.c"
 #include "lex/lex.c"
 #include "parse/parser.c"
-
 
 // Comment this line to disable debug mode:
 #define DEBUG_MODE 1
@@ -25,7 +32,7 @@ int main(int argc, char** argv)
 {
     check_for_tools();
 
-	if (argc < 2) // Updated this to the correct amount of arguments I want 
+	if (argc < 2)
 	{
 		fprintf(stderr, "Insufficient arguments to compile");
 		return -1;
@@ -38,10 +45,12 @@ int main(int argc, char** argv)
 
 	char buffer[CHAR_MAX_PER_LINE];
 
+    // This could be refactored
 	while (fgets(buffer, sizeof(buffer), f_read) != NULL)
 	{
         if (debug_mode_flag)
             printf("Program size: %d\n", program_size);
+        
         char* copyOfBuffer = (char*)malloc(strlen(buffer)+1);
         strcpy(copyOfBuffer, buffer);
 
@@ -63,9 +72,7 @@ int main(int argc, char** argv)
                 printf("Print Only Added\n");
             addPrintOnlyString(copyOfBuffer, program, &program_size);
             continue;
-		}
-
-        
+		}  
 	}
 
     char* file_output_name = create_new_name_for_output_file(argv[1], ".asm");
@@ -113,51 +120,17 @@ int main(int argc, char** argv)
         ASTNode_t current_node = program[i];
 
         if (current_node.type == NODE_COMMENT)
-        {
-            // fprintf(f_write, "\n; %s\n", current_node.value);
-
             write_comment_node(f_write, &current_node);
-        }
 
         if (current_node.type == NODE_PRINT)
-        {
             write_print_only_string_node(f_write);
-        }
     }
 	
-    // write_exit_code(f_write);
     write_exit_code(
         &params
     );
 
     fclose(f_write);
-
-    // if (_ASM_LINK_CREATE_PE_FLAG_)
-    // {
-    //     char* message_one = (char*)malloc(sizeof(char*));
-    //     snprintf(message_one, sizeof(message_one), "nasm -f win64 %s.asm -o %s.o", file_output_name);
-
-    //     int first_call = system(message_one);
-
-    //     if (first_call != 0)
-    //     {
-    //         fprintf(stderr, "Error: Something went wrong with the nasm assembly in the compilation process");
-    //         free (message_one);
-    //         return -1;
-    //     } else {
-    //         char* message_two = (char*)malloc(sizeof(char*));
-    //         snprintf(message_two, sizeof(message_two), "ld %s.o -o %s.exe -lkernel32 -e main", file_output_name);
-
-    //         int final_call = system(message_two);
-
-    //         if (final_call != 0)
-    //         {
-    //             fprintf(stderr, "Error: Something went wrong with the ld linker in the compilation process");
-    //             free (message_two);
-    //             return -1;
-    //         }
-    //     }
-    // }
     
     return 0;
 }

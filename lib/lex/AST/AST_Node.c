@@ -1,4 +1,4 @@
 #include "AST_Node.h"
 
-ASTNode_t program[1024]; //root
-// static int program_size = 0;    //depth
+// (root): Creates the AST tree to then be handled later on in lex.c or macros.h
+ASTNode_t program[1024]; 

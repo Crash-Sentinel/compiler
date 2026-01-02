@@ -44,8 +44,10 @@ void check_for_tools()
     system("cls");
 }
 
-// TODO: Double check the logic behind the pointers on this one, \
-    specifically the non-zero offset warning
+/**
+ * @note In the future, I will have to double check the logic behind the pointer
+ *       arithmetic and freeing, specifically a non-zero offset warning related to this
+ */
 char* create_new_name_for_output_file(
     char* file_name,
     char* file_new_extension

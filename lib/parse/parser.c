@@ -9,7 +9,9 @@ void write_comment_node(
     fprintf(file_to_write, "\n; %s\n", node->value);
 }
 
-// Should this have ASTNode_t* node for more expanded functionality?
+/**
+ * @note This may be changed to include a ASTNode_t* parameter for more expanded functionality
+ */
 void write_windowsx64_print_only_string_node(
     FILE* file_to_write
 )

@@ -91,3 +91,14 @@ Replace `FILE_NAME` with your assembly file name, it should be the same name as 
 nasm -f win64 {FILE_NAME}.asm -o {FILE_NAME}.o
 ld {FILE_NAME}.o -o {FILE_NAME}.exe -lkernel32 -e main
 ```
+
+## Update Log Details
+
+1/2/2026: Happy 2026 new year! With it brings Arch and possibly Linux OS capabilities for the 
+acc compiler! More testing is needed on my part to ensure it's all Linux Distros but overall good steps
+for the "I use Arch BTW" fiends (including myself)
+
+Hopefully I fixed the readme to actually work right in Github, and my documentation is much more cleaner (...Hopefully)
+
+Still looking towards making variables, but there are also things that I want to refactor or just update excluding
+the things that need that more higher level functionality. In either case, hope you enjoy!

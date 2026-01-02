@@ -3,7 +3,7 @@
 
 /**
  * @brief 
- * 
+ * Showcases the types of NodeTypes that will then make up the AST to then process
  */
 typedef enum {
     NODE_COMMENT,
@@ -12,7 +12,7 @@ typedef enum {
 
 /**
  * @brief 
- * 
+ * Basic typedef struct showcasing a ASTNode
  */
 typedef struct ASTNode
 {
@@ -20,7 +20,7 @@ typedef struct ASTNode
     char* value;
 } ASTNode_t;
 
-static int program_size = 0;    //depth
-
+// (depth): "global" variable to show the depth of the AST tree
+static int program_size = 0;    
 
 #endif // _AST_NODE_H_

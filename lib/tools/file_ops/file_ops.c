@@ -26,7 +26,6 @@ void write_windowsx64_exit_code(
         fprintf(params->file_to_write, "\nxor ecx, ecx\ncall ExitProcess\n" );
 }
 
-// TODO: Finish this
 void write_linux_exit_code(
     codegen_context_t* params
 )
@@ -36,10 +35,6 @@ void write_linux_exit_code(
         "\tmov rax, SYS_EXIT \n"
         "\tsyscall\n"
     );
-
-    // ASTNode_t* program = params->program;
-    
-    // free(program);
 }
 
 void write_windowx64_headers(
@@ -49,7 +44,6 @@ void write_windowx64_headers(
     fprintf(params->file_to_write, "default rel\nextern GetStdHandle\nextern WriteConsoleA\nextern ExitProcess\n\n");
 }
 
-// TODO: Finish this
 void write_linux_headers(
     codegen_context_t* params
 )
@@ -97,7 +91,6 @@ void write_windowsx64_section_data(
     free(program);
 }
 
-// TODO: Finish this
 void write_linux_section_data(
     codegen_context_t* params
 )
@@ -130,14 +123,7 @@ void write_linux_section_data(
             
             fflush(params->file_to_write);
         }
-        // free(program);
-
     }
-
-
-    // if (debug_mode_flag)
-    //   printf("Test4\n");
-
 }
 
 void write_windowsx64_section_bss(
@@ -170,15 +156,14 @@ void write_windowsx64_section_bss(
     free(program);
 }
 
-// TODO: Finish This
+/**
+ * @note No logic in this section necessarily yet, may change for future implementations
+ */
 void write_linux_section_bss(
-    // FILE* file_to_write,
-    // ASTNode_t* program,
-    // int program_size
     codegen_context_t* params
 )
 {
-    // no logic here yet, not necessary just yet
+    
 }
 
 void write_windowsx64_section_text(
@@ -197,11 +182,7 @@ void write_windowsx64_section_text(
     
 }
 
-// TODO: Finish This
 void write_linux_section_text(
-    // FILE* file_to_write,
-    // ASTNode_t* program,
-    // int program_size
     codegen_context_t* params
 )
 {
@@ -212,21 +193,7 @@ void write_linux_section_text(
 
     emit_print_count = 0;
 
-    // for (int i = 0; i < params->size_of_program; ++i)
-    // {
-    //     ASTNode_t current_node = params->program[i];
-    //     printf("Writing section text ...\n");
-    //     if (current_node.type == NODE_PRINT)
-    //     {
-            
-
-    //     }
-    // }
-
-    // emit_print_count = 0;
-
     fflush(params->file_to_write);
 
-    // free(program);
 }
 
